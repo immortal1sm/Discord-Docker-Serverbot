@@ -1,0 +1,20 @@
+{
+  "name": "discord-game-server-bot",
+  "version": "2.0.0",
+  "description": "Dynamic Discord bot for managing game server Docker containers",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "docker:build": "docker build -t discord-bot .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dockerode": "^4.0.2",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

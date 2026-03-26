@@ -1,0 +1,48 @@
+# Secrets and config (don't bake into image)
+.env
+.env.*
+!.env.example
+
+# Node modules (will be installed in Docker)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Git
+.git/
+.gitignore
+
+# Docker files (don't need in image)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Local scripts (users will provide their own)
+scripts/
+*.sh
+!scripts/  # Exclude all scripts
+
+# Documentation
+README.md
+LICENSE
+docs/
+
+# Development files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
