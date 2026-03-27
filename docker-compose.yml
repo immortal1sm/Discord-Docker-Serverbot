@@ -5,8 +5,6 @@ services:
     build: .
     container_name: discord-bot
     restart: unless-stopped
-    env_file:
-      - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
