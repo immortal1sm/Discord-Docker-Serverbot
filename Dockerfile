@@ -1,9 +1,14 @@
 # Base image
 FROM node:20-alpine
 
-# Install Docker CLI (optional, for debugging)
+# Install Docker CLI
 USER root
 RUN apk add --no-cache docker-cli bash curl
+
+# Create docker group and add node user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    addgroup nodejs docker || true
 
 # Create working directory
 WORKDIR /usr/src/app
@@ -15,14 +20,12 @@ RUN npm install --production
 # Copy bot code
 COPY bot.js ./
 
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 && \
-    chown -R nodejs:nodejs /usr/src/app
+# Change ownership
+RUN chown -R nodejs:nodejs /usr/src/app
 
 USER nodejs
 
-# Health check (optional)
+# Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "process.exit(0)" || exit 1
 
