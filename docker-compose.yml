@@ -4,7 +4,11 @@ services:
     container_name: discord-bottest
     restart: unless-stopped
     environment:
-      - .env  
+      DISCORD_TOKEN: "MTQ2NzY2NTEyNDYyOTE1MTg5OQ.GIdT_J.VNUdPvE-U1Xsu7HjsXpbJutAe6ownH5K4EG65s"
+      CLIENT_ID: "1467665124629151899"
+      GUILD_ID: "866693298986156042"
+      CONTROL_CHANNEL: "server-control" 
+      
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
