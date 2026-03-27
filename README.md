@@ -67,20 +67,31 @@ Unfortunately, due to the nature of this project, providing a demo GIF or screen
 - **Discord Server**: You need a Discord server to use the bot.
 
 ## Installation
-To install the bot, follow these steps:
-```bash
 ### 1️⃣ Prerequisites
 - Docker and Docker Compose installed on your host system
 - A Discord account with server management permissions
 - Your game server containers already created
 
-Deploy with Dockhand
+**Deploy with Dockhand**
 - In Dockhand, create a new stack
-
 - Link your GitHub repository
+- Configure environment variables
 
-- Configure environment variables (see step 5)
+```bash
+# Discord Bot Configuration
+DISCORD_TOKEN="discord_token"
+CLIENT_ID="client_id_here"
+GUILD_ID="guild_id" #serverID
+CONTROL_CHANNEL="server-control"
 
+# Server Configuration
+SERVERS_YAML=|
+  {icarus}:
+    displayName: {Icarus Dedicated Server}
+    container: {icarus-dedicated}
+    serverName: {server_name}
+    password: {server_password}
+  
 ```
 
 ## Usage
