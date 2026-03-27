@@ -110,6 +110,16 @@ function parseServerConfig() {
     return servers;
 }
 
+// Handle unhandled rejections
+process.on('unhandledRejection', (error) => {
+    console.error('Unhandled Promise Rejection:', error);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+});
+
 const SERVERS_CONFIG = parseServerConfig();
 
 /* ───────── Docker Helper Functions ───────── */
@@ -267,6 +277,8 @@ async function executeDockerAction(containerName, action) {
             throw new Error(`Unknown action: ${action}`);
     }
 }
+
+
 
 /* ───────── Slash Commands ───────── */
 
