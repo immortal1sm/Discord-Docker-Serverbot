@@ -698,4 +698,23 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-client.login(DISCORD_TOKEN).catch(console.error);
+// Wrap the login in a retry function
+async function loginWithRetry(retries = 3, delay = 5000) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            await client.login(DISCORD_TOKEN);
+            return;
+        } catch (error) {
+            console.error(`Login attempt ${i + 1} failed:`, error.message);
+            if (i < retries - 1) {
+                console.log(`Retrying in ${delay / 1000} seconds...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else {
+                throw error;
+            }
+        }
+    }
+}
+
+// Replace client.login with:
+loginWithRetry().catch(console.error);
