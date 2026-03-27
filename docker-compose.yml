@@ -3,12 +3,15 @@ services:
     build: .
     container_name: discord-bottest
     restart: unless-stopped
+    
     environment:
-      DISCORD_TOKEN: "MTQ2NzY2NTEyNDYyOTE1MTg5OQ.GIdT_J.VNUdPvE-U1Xsu7HjsXpbJutAe6ownH5K4EG65s"
-      CLIENT_ID: "1467665124629151899"
-      GUILD_ID: "866693298986156042"
-      CONTROL_CHANNEL: "server-control" 
-      
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - CLIENT_ID=${CLIENT_ID}
+      - GUILD_ID=${GUILD_ID}
+      - CONTROL_CHANNEL=${CONTROL_CHANNEL:-server-control}
+      - SERVERS_YAML=${SERVERS_YAML}
+      - SERVERS_JSON=${SERVERS_JSON}
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
