@@ -34,7 +34,6 @@
 - [Demo/Screenshots](#demoscreenshots)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -61,15 +60,6 @@ Unfortunately, due to the nature of this project, providing a demo GIF or screen
 - **discord.js**: A library for interacting with the Discord API.
 - **dockerode**: A library for interacting with Docker.
 
-## Project Structure
-```markdown
-discord-game-server-bot/
-├── Dockerfile             # Dockerfile for building the bot image
-├── docker-compose.yml     # Docker Compose configuration
-├── package.json           # npm package file
-├── bot.js                 # The main bot script
-├── README.md              # This file
-```
 
 ## Prerequisites
 - **Node.js**: Ensure you have Node.js installed on your system.
@@ -79,7 +69,17 @@ discord-game-server-bot/
 ## Installation
 To install the bot, follow these steps:
 ```bash
+### 1️⃣ Prerequisites
+- Docker and Docker Compose installed on your host system
+- A Discord account with server management permissions
+- Your game server containers already created
 
+Deploy with Dockhand
+- In Dockhand, create a new stack
+
+- Link your GitHub repository
+
+- Configure environment variables (see step 5)
 
 ```
 
