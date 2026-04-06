@@ -2,7 +2,7 @@
 
 A powerful Discord bot that lets you manage Docker game server containers through slash commands — start, stop, restart, view live logs, and monitor resources, all from Discord. Built with **Discord.js v14** and **Dockerode** for direct Docker API integration. No shell scripts required.
 
-> Works seamlessly with [Dockhand](https://dockhand.io/) and any Docker Compose deployment.
+> Works seamlessly with [Dockhand](https://dockhand.pro/) and any Docker Compose deployment.
 
 ---
 
