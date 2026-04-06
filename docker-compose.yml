@@ -3,7 +3,11 @@ services:
     build: .
     container_name: discord-bot
     restart: unless-stopped
-    
+
+    # Map container UID (nodejs=1001) to host docker group GID (991)
+    # so the process can access /var/run/docker.sock
+    user: "1001:991"
+
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
       - CLIENT_ID=${CLIENT_ID}

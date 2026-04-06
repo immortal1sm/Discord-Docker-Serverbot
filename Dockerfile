@@ -5,6 +5,9 @@ FROM node:20-alpine
 USER root
 RUN apk add --no-cache docker-cli bash curl
 
+# Create working directory first
+RUN mkdir -p /usr/src/app
+
 # Create node user and ensure it has docker group access
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001 && \
@@ -13,7 +16,7 @@ RUN addgroup -g 1001 -S nodejs && \
     addgroup nodejs docker && \
     chown -R nodejs:nodejs /usr/src/app
 
-# Create working directory
+# Set working directory
 WORKDIR /usr/src/app
 
 # Copy package files and install dependencies
