@@ -1,104 +1,224 @@
-# Game Server Discord Bot  A powerful Discord bot that lets trusted users manage Docker game server containers through slash commands. Built with Discord.js v14 and Dockerode for direct Docker API integration. 
-> **Note**: This bot communicates directly with the Docker API through the mounted socket. No shell scripts required! All server configurations are managed through environment variables.
-## ✨ Features
-- **Dynamic Server Management** - Add/remove servers via environment variables, no code changes
-- **Direct Docker API Integration** - Uses Dockerode for efficient container management
-- **Multiple Configuration Formats** - Supports YAML, JSON, or CSV server definitions
-- **Rich Server Information** - View container stats (CPU, Memory, Uptime) directly in Discord
-- **Secure by Design** - Slash commands only, channel restrictions, confirmation for destructive actions
-- **Dockhand Compatible** - Works seamlessly with Dockhand deployments
-## 🚀 Quick Start
-### Prerequisites
-- **Docker** and **Docker Compose** installed on your host
-- A **Discord account** with server management permissions
-- **Docker containers** for your game servers (create them first)
-### 1. Create Your Discord Bot
-1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
-2. Click **"New Application"** and give it a name
-3. Navigate to the **"Bot"** section and create a bot
-4. Copy these credentials: 
-- **Bot Token** (from Bot section)
-- **Application (Client) ID** (from General Information)
-- **Guild (Server) ID** (Enable Developer Mode → Right-click server → Copy ID)
-5. Under **OAuth2 → URL Generator**, select: 
-- `applications.commands`
-- `bot`     
-6. Under **Bot Permissions**, select: 
-- `Send Messages`
-- `Read Message History`
-- `Use Slash Commands`  
-7. Use the generated URL to invite your bot to your Discord server
+# Discord Docker Game Server Bot
+
+A powerful Discord bot that lets you manage Docker game server containers through slash commands — start, stop, restart, view live logs, and monitor resources, all from Discord. Built with **Discord.js v14** and **Dockerode** for direct Docker API integration. No shell scripts required.
+
+> Works seamlessly with [Dockhand](https://dockhand.io/) and any Docker Compose deployment.
+
+---
 
 ## Table of Contents
-- [Description](#description)
-- [Demo/Screenshots](#demoscreenshots)
+
 - [Features](#features)
+- [Slash Commands](#slash-commands)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [IoT-Ready Features](#iot-ready-features)
+- [Security](#security)
+- [Deploy with Dockhand](#deploy-with-dockhand)
 - [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
-## Description
-The Discord Game Server Bot is a powerful tool for gamers and Discord server administrators. It allows for the dynamic management of game server Docker containers directly from your Discord server. With this bot, you can easily start, stop, and manage game servers, making it an ideal solution for gaming communities.
-
-## Demo/Screenshots
-Unfortunately, due to the nature of this project, providing a demo GIF or screenshots is challenging. However, the bot's functionality can be demonstrated through its commands and the ability to manage Docker containers.
+---
 
 ## Features
-- 🎮 **Game Server Management**: Start, stop, and manage game servers with ease.
-- ⚡ **Docker Integration**: Leverage the power of Docker for containerization.
-- 📝 **Command-Based Interface**: Interact with the bot using simple and intuitive commands.
-- 🚀 **Dynamic Scaling**: Easily scale your game servers up or down as needed.
-- 🔒 **Security**: Ensure your game servers are secure with the bot's management capabilities.
 
-## Tech Stack
-- **JavaScript**: The primary programming language used.
-- **Node.js**: The runtime environment for executing JavaScript code.
-- **Docker**: For containerizing game servers.
-- **discord.js**: A library for interacting with the Discord API.
-- **dockerode**: A library for interacting with Docker.
+- **Dynamic Server Management** — Add or remove game servers through environment variables. No code changes needed.
+- **Direct Docker API Integration** — Uses Dockerode for efficient container management via the mounted Docker socket.
+- **Rich Server Information** — View real-time CPU usage, memory consumption, and uptime directly in Discord embeds.
+- **Log Streaming** — Fetch recent container logs, filter by keyword, and download as a file when too long.
+- **Resource Monitoring** — Automatic alerts when a server's memory usage exceeds a configurable threshold.
+- **Container Death Watcher** — Get notified instantly when a game server crashes or stops unexpectedly.
+- **Role-Based Permissions** — Restrict destructive actions (stop/restart) to specific Discord roles.
+- **Multiple Config Formats** — Supports YAML, JSON, or CSV for server definitions.
+- **Safe Destructive Actions** — Confirmation buttons for stop and restart to prevent accidents.
+- **Auto-Disconnect Credentials** — Credential embeds auto-delete after 30 seconds.
 
+---
 
-## Prerequisites
-- **Node.js**: Ensure you have Node.js installed on your system.
-- **Docker**: Docker must be installed and running on your system.
-- **Discord Server**: You need a Discord server to use the bot.
+## Slash Commands
 
-## Installation
-### 1️⃣ Prerequisites
-- Docker and Docker Compose installed on your host system
-- A Discord account with server management permissions
-- Your game server containers already created
+All info commands (`/status`, `/servers`) work from **any channel**. Server control commands are restricted to your designated control channel.
 
-**Deploy with Dockhand**
-- In Dockhand, create a new stack
-- Link your GitHub repository
-- Configure environment variables
+| Command | Description | Location |
+|---|---|---|
+| `/status` | Show real-time status of all game servers | Anywhere |
+| `/servers` | List all configured servers and available actions | Anywhere |
+| `/logs <server>` | View recent container logs (optional: `--lines`, `--search`) | Control channel |
+| `/<server> start` | Start a game server | Control channel |
+| `/<server> stop` | Stop a game server (requires confirmation) | Control channel |
+| `/<server> restart` | Restart a game server (requires confirmation) | Control channel |
+| `/<server> status` | Show detailed stats (CPU, RAM, uptime) | Control channel |
+| `/<server> credentials` | Display server name and password (auto-deletes after 30s) | Control channel |
+
+Server-specific commands (`/icarus`, `/palworld`, `/sotf`, etc.) are generated dynamically from your config.
+
+---
+
+## Quick Start
+
+### 1. Create a Discord Bot Application
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click **New Application**, name it, and save
+3. Go to **Bot** → click **Add Bot** → copy the **Token**
+4. Go to **General Information** → copy the **Application (Client) ID**
+5. Enable **Developer Mode** in Discord Settings (Appearance → Advanced)
+6. Right-click your Discord server → **Copy Server ID** (this is the Guild ID)
+7. Under **Bot Permissions**, enable:
+   - `Send Messages`
+   - `Read Message History`
+   - `Use Slash Commands`
+8. Under **OAuth2**, check `bot` and `applications.commands` to generate an invite URL
+9. Use the URL to invite the bot to your server
+
+### 2. Create Your Control Channel
+
+Create a text channel in your Discord server named `server-control` (or any name you prefer — you'll configure it later).
+
+### 3. Deploy
+
+**Docker Compose (standalone):**
 
 ```bash
-# Discord Bot Configuration
-DISCORD_TOKEN="discord_token"
-CLIENT_ID="client_id_here"
-GUILD_ID="guild_id" #serverID
-CONTROL_CHANNEL="server-control"
+# Clone the repo
+git clone https://github.com/immortal1sm/Discord-Docker-Serverbot.git
+cd Discord-Docker-Serverbot
 
-# Server Configuration
-SERVERS_YAML=|
-  {icarus}:
-    displayName: {Icarus Dedicated Server}
-    container: {icarus-dedicated}
-    serverName: {server_name}
-    password: {server_password}
-  
+# Create your .env file (see Configuration below)
+nano .env
+
+# Deploy
+docker compose up -d --build
 ```
 
-## Usage
-To use the bot, you'll need to invite it to your Discord server and configure it according to your needs. The bot responds to a set of commands that allow you to manage your game servers.
+See [Deploy with Dockhand](#deploy-with-dockhand) for stack-based deployment.
 
-## Contributing
-Contributions are welcome! If you have any ideas or want to report a bug, please open an issue or a pull request.
+---
+
+## Configuration
+
+All settings are managed through environment variables in your `.env` file or Docker Compose config.
+
+### Required Variables
+
+| Variable | Description | Example |
+|---|---|---|
+| `DISCORD_TOKEN` | Your bot token from the Developer Portal | `MTQ2Nz...` |
+| `CLIENT_ID` | Application Client ID | `123456789012345678` |
+| `GUILD_ID` | Discord server (guild) ID | `866693298986156042` |
+
+### Optional Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `CONTROL_CHANNEL` | `server-control` | Channel name where server control commands work |
+| `SERVERS_JSON` | (none) | Game servers as JSON (see examples below) |
+| `SERVERS_YAML` | (none) | Game servers as YAML |
+| `ALERTS_CHANNEL` | (disabled) | Channel name for resource alerts and crash notifications |
+| `ADMIN_ROLES` | (disabled = all users) | Comma-separated Discord role names. Only members with these roles can stop/restart servers |
+| `RESOURCE_ALERT_THRESHOLD` | `85` | RAM percentage threshold for alerts (1-100) |
+
+### Server Configuration Examples
+
+You can define servers in **one** of three formats. JSON is recommended for Dockhand.
+
+**JSON** (recommended):
+```json
+{
+  "palworld": {
+    "displayName": "Palworld Dedicated Server",
+    "container": "palworld-server",
+    "serverName": "Paliant Peaks",
+    "password": "s3cr3t"
+  },
+  "sotf": {
+    "displayName": "Sons of the Forest Server",
+    "container": "sotf",
+    "serverName": "Baination",
+    "password": "play4fun"
+  },
+  "icarus": {
+    "displayName": "Icarus Dedicated Server",
+    "container": "icarus-dedicated",
+    "serverName": "Baination",
+    "password": "explore!"
+  }
+}
+```
+
+**YAML**:
+```yaml
+palworld:
+  displayName: Palworld Dedicated Server
+  container: palworld-server
+  serverName: Paliant Peaks
+  password: s3cr3t
+sotf:
+  displayName: Sons of the Forest Server
+  container: sotf
+  serverName: Baination
+  password: play4fun
+```
+
+**CSV** (compact fallback):
+```
+key:displayName:containerName:serverName:password
+```
+
+---
+
+## IoT-Ready Features
+
+The bot is designed to be easily extensible for IoT and smart home integration. The following environment variables are placeholders for future expansion:
+
+| Variable | Purpose |
+|---|---|
+| `ALERTS_CHANNEL` | Route monitoring alerts to a specific Discord channel |
+| `MQTT_BROKER_URL` | Publish subscribe to MQTT topics for IoT device integration |
+| `SMART_PLUG_URL` | Control physical power to game server hardware |
+| `HA_URL` | Integrate with Home Assistant for smart home automation |
+
+Future releases may include:
+- MQTT publish/subscribe for real-time game server state broadcasting
+- Smart plug control via Tasmota, Shelly, or TP-Link APIs
+- Home Assistant sensor exposure (server status as HA entities)
+- Hardware sensor monitoring (CPU temp, power draw, fan speed) via mounted `/sys` paths
+
+---
+
+## Security
+
+- **Channel Restriction:** Server control commands only work in your designated `CONTROL_CHANNEL`. Info commands (`/status`, `/servers`) work anywhere.
+- **Role-Based Access:** Set `ADMIN_ROLES` to restrict stop/restart to specific Discord roles.
+- **Confirmation Buttons:** Stop and restart require a button confirmation before executing.
+- **Auto-Deleting Credentials:** Server password embeds auto-delete after 30 seconds.
+- **No Shell Access:** The bot communicates through the Docker API (Dockerode), not shell commands.
+- **Non-Root Container:** The bot runs as a non-root user (`nodejs`) with only the minimum GID needed for Docker socket access.
+
+---
+
+## Deploy with Dockhand
+
+1. In Dockhand, create a new **Docker Compose Stack**
+2. Link this repository: `https://github.com/immortal1sm/Discord-Docker-Serverbot`
+3. Select the `docker-compose.yml` file
+4. Set your environment variables (required: `DISCORD_TOKEN`, `CLIENT_ID`, `GUILD_ID`)
+5. Set `SERVERS_JSON` with your game server definitions
+6. Deploy — Dockhand handles the build, socket mount, and user mapping automatically
+
+The `docker-compose.yml` includes `user: "1001:991"` which maps the container user to the host's Docker group, enabling socket access without running as root.
+
+---
+
+## Tech Stack
+
+- **Node.js 20** (Alpine) — Runtime
+- **Discord.js v14** — Discord API interaction
+- **Dockerode** — Docker API client (no shell needed)
+- **js-yaml** — YAML config parsing
+
+---
 
 ## License
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+MIT License. See [LICENSE](LICENSE) for details.
