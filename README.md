@@ -128,19 +128,19 @@ You can define servers in **one** of three formats. JSON is recommended for Dock
   "palworld": {
     "displayName": "Palworld Dedicated Server",
     "container": "palworld-server",
-    "serverName": "Paliant Peaks",
+    "serverName": "Sever123",
     "password": "s3cr3t"
   },
   "sotf": {
     "displayName": "Sons of the Forest Server",
     "container": "sotf",
-    "serverName": "Baination",
+    "serverName": "Server123",
     "password": "play4fun"
   },
   "icarus": {
     "displayName": "Icarus Dedicated Server",
     "container": "icarus-dedicated",
-    "serverName": "Baination",
+    "serverName": "Server123",
     "password": "explore!"
   }
 }
@@ -151,12 +151,12 @@ You can define servers in **one** of three formats. JSON is recommended for Dock
 palworld:
   displayName: Palworld Dedicated Server
   container: palworld-server
-  serverName: Paliant Peaks
+  serverName: Server123
   password: s3cr3t
 sotf:
   displayName: Sons of the Forest Server
   container: sotf
-  serverName: Baination
+  serverName: Server123
   password: play4fun
 ```
 
