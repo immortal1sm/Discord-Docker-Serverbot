@@ -15,6 +15,10 @@ services:
       - CONTROL_CHANNEL=${CONTROL_CHANNEL:-server-control}
       - SERVERS_YAML=${SERVERS_YAML}
       - SERVERS_JSON=${SERVERS_JSON}
+      # IoT-ready / monitoring env vars (optional)
+      - ALERTS_CHANNEL=${ALERTS_CHANNEL:-}
+      - ADMIN_ROLES=${ADMIN_ROLES:-}
+      - RESOURCE_ALERT_THRESHOLD=${RESOURCE_ALERT_THRESHOLD:-85}
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
