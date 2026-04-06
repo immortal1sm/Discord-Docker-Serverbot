@@ -407,7 +407,7 @@ const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
 
 /* ───────── Discord Client ───────── */
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
 
 client.once("clientReady", () => {
