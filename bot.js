@@ -396,6 +396,8 @@ const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
                 console.log(`   /${cmd.name} - Show all server status`);
             } else if (cmd.name === "servers") {
                 console.log(`   /${cmd.name} - List configured servers`);
+            } else if (cmd.name === "logs") {
+                console.log(`   /${cmd.name} [server] [--lines N] [--search TEXT] - View server logs`);
             } else {
                 console.log(`   /${cmd.name} [start|stop|restart|status|credentials]`);
             }
